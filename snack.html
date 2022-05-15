@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/snake.css">
+    <title>貪吃蛇</title>
+
+</head>
+<body>
+    <canvas id="canvas_id"></canvas>
+    <div id="info" style="position: relative;">
+        <h2 style="position: absolute;left: 20%;font-size: 3vmin;" score="0">當前分數 : </h2>
+        <h2 style="position: absolute;right: 30%;font-size: 3vmin;" level="0">當前難易度 : </h2>
+    </div>
+    
+    <div id="msg_box" show="false">
+        <h1 style="text-align: center;">請輸入名稱</h1>
+        <input id="gamer_name" type="text" autocomplete="off">
+        <button id="submit" onclick="Submit()">提交</button>
+    </div>
+
+    <img id="sound_effect" onclick="sound_effect_btn()" src="icon/sound_effect.png" width="40" height="40">
+
+    <main id='leaderboard__profiles'>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">1</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">2</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">3</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">4</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">5</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">6</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">7</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">8</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">9</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+        <article class='leaderboard__profile'>
+            <span class="leaderboard__rank">10</span>
+            <span class="leaderboard__round"></span>
+            <span class="leaderboard__name">-----</span>
+            <span class="leaderboard__score">0</span>
+        </article>
+    </main>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/snake.js"></script>
+</body>
+</html>

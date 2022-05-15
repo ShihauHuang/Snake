@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quadraticCurveTo_Check</title>
+    <style>
+        *{
+            margin: 0px 0px 0px 10px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <!--https://developer.mozilla.org/zh-TW/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes-->
+    <H1 style="text-align: center;margin-bottom: 15px;">quadraticCurveTo</H1>
+    <div style="display: flex;width: 900px;flex-wrap: wrap;justify-content:space-between; left: 0; top: 0; margin: 0 auto;margin-bottom: 15px;">
+        <h2 style="width: 140px;margin-left: 3px;text-align: center;">start_x</h2>
+        <h2 style="width: 140px;margin-left: 3px;text-align: center;">start_y</h2>
+        <h2 style="width: 140px;margin-left: 3px;text-align: center;">cp1x</h2>
+        <h2 style="width: 140px;margin-left: 3px;text-align: center;">cp1y</h2>
+        <h2 style="width: 140px;margin-left: 3px;text-align: center;">end_x</h2>
+        <h2 style="width: 140px;margin-left: 3px;text-align: center;">end_y</h2>
+        <input id="start_x" type="text" style="width: 140px;margin-left: 3px;margin-top: 3px;height: 3em;text-align: center;" value="0">
+        <input id="start_y" type="text" style="width: 140px;margin-left: 3px;margin-top: 3px;height: 3em;text-align: center;" value="0">
+        <input id="cp1x" type="text" style="width: 140px;margin-left: 3px;margin-top: 3px;height: 3em;text-align: center;" value="0">
+        <input id="cp1y" type="text" style="width: 140px;margin-left: 3px;margin-top: 3px;height: 3em;text-align: center;" value="0">
+        <input id="end_x" type="text" style="width: 140px;margin-left: 3px;margin-top: 3px;height: 3em;text-align: center;" value="100">
+        <input id="end_y" type="text" style="width: 140px;margin-left: 3px;margin-top: 3px;height: 3em;text-align: center;" value="100">
+    </div>
+    <canvas id="canvas_id" width="500" height="500" style="border-style: solid;margin:0 auto;left: 0px;display: block;;"></canvas>
+    <canvas id="final_canvas" width="500" height="500" style="border-style: solid;right: 2%;bottom: 2%;position: fixed;"></canvas>
+    <canvas id="check_canvas" width="500" height="500" style="border-style: solid;left: 2%;bottom: 2%;position: fixed;"></canvas>
+
+    <div id="spanlist" style="position: fixed; right: 2%; top: 1%"></div>
+
+    <button onclick="add_to_final()" style="position: fixed; top: 15%; right: 30%;width: 100px;height: 30px;" >Add</button>
+    <button onclick="Clear_final()" style="position: fixed; top: 20%; right: 30%;;width: 100px;height: 30px;" >Clear</button>
+    
+    <script>
+        var scale_rate =  5
+        var start_x = document.getElementById("start_x")
+        var start_y = document.getElementById("start_y")
+        var cp1x = document.getElementById("cp1x")
+        var cp1y = document.getElementById("cp1y")
+        var end_x = document.getElementById("end_x")
+        var end_y = document.getElementById("end_y")
+        var canvas = document.getElementById('canvas_id')
+        var context = canvas.getContext('2d')
+        var clicking = false
+        var spanlist = document.getElementById("spanlist")
+        
+        window.onload = OnPageLoaded
+        function OnPageLoaded() {
+            document.addEventListener('wheel' , scrollcheck) //滑動滾輪
+            document.addEventListener('input' , inputcheck) //更改數值
+
+            canvas.addEventListener('mousedown' , mousedown) // canvas 內按下左鍵 滾輪鍵 右鍵
+            document.addEventListener('mousemove' , mousemove) // 判斷滑鼠整個視窗的移動
+            document.addEventListener('mouseup' , mouseup) // 判斷 canvas 移動
+            canvas.addEventListener('contextmenu' , mousedown) // 
+
+            Calculate()
+            draw_shape()
+
+        }
+
+        function scrollcheck (e) {
+            if (e.deltaY >= 0) {
+                e.target.value = parseInt(e.target.value) - 1
+            } else {
+                e.target.value = parseInt(e.target.value) + 1
+            }
+            Clear()
+            Calculate()
+        }
+
+        function inputcheck (e) {
+            Clear()
+            Calculate()
+        }
+
+
+
+        function mousedown(e) {
+            if (e.button == 0) { // 左鍵
+                clicking = true
+                cp1x.value = parseInt(e.offsetX / scale_rate);
+                cp1y.value = parseInt(e.offsetY / scale_rate);
+            } 
+            else if (e.button == 1) { // 滾輪鍵
+                start_x.value = parseInt(e.offsetX / scale_rate);
+                start_y.value = parseInt(e.offsetY / scale_rate);
+            } 
+            else if (e.button == 2) { // 右鍵
+                e.preventDefault() // 取消右鍵本身的觸發事件
+                end_x.value = parseInt(e.offsetX / scale_rate);
+                end_y.value = parseInt(e.offsetY / scale_rate);
+            }
+            Clear()
+            Calculate()
+        }
+
+        function mousemove(e) {
+            let canvas_x_on_body = 0
+            let canvas_y_on_body = 0
+            let obj = canvas
+            while (obj!=null){
+                canvas_x_on_body += obj.offsetLeft
+                canvas_y_on_body += obj.offsetTop
+                obj = obj.offsetParent
+            }
+            if (clicking === true) {
+                cp1x.value = parseInt( (e.x - canvas_x_on_body - 13) / scale_rate); //因 margin & border 所以多減去 13
+                cp1y.value = parseInt( (e.y - canvas_y_on_body - 3) / scale_rate);
+                Clear()
+                Calculate()
+            }   
+        }
+
+        function mouseup(e) {
+            clicking = false
+        }
+
+
+        function Calculate() {
+            context.beginPath();
+            context.moveTo(start_x.value * scale_rate , start_y.value * scale_rate)
+            context.quadraticCurveTo( 
+                cp1x.value * scale_rate,
+                cp1y.value * scale_rate,
+                end_x.value * scale_rate,
+                end_y.value * scale_rate, 
+            )
+            context.stroke();
+        }
+
+        function Clear() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    
+        function add_to_final() {
+        
+            let _span = document.createElement('span')
+            _span.style.display = 'block'
+            _span.innerHTML = '{start_x: ' +  start_x.value + ', start_y: ' +  start_y.value + ', cp1x: ' +  cp1x.value + ', cp1y: ' +  cp1y.value + ', end_x: ' +  end_x.value + ', end_y: ' +  end_y.value + '},'
+            spanlist.appendChild(_span)
+
+
+            let final_canvas = document.getElementById('final_canvas');
+            let final_context = final_canvas.getContext('2d'); 
+            final_context.beginPath();
+            final_context.moveTo(start_x.value * scale_rate , start_y.value * scale_rate)
+            final_context.quadraticCurveTo( 
+                cp1x.value * scale_rate,
+                cp1y.value * scale_rate,
+                end_x.value * scale_rate,
+                end_y.value * scale_rate, 
+            )
+            final_context.stroke();
+        }
+
+        function Clear_final() {
+            console.log(spanlist.children)
+            for (let i = spanlist.children.length - 1 ; i >= 0 ; i--) {
+                spanlist.children[i].remove()
+            }
+
+            let final_canvas = document.getElementById('final_canvas');
+            let final_context = final_canvas.getContext('2d'); 
+            final_context.clearRect(0, 0, final_canvas.width, final_canvas.height);
+        }
+        
+
+        function draw_shape () {
+            
+            const check_canvas = document.getElementById('check_canvas')
+            const check_context = check_canvas.getContext('2d')
+
+            const test = [
+                {start_x: 30, start_y: 0, cp1x: 40, cp1y: 120, end_x: 50, end_y: 95},
+                {start_x: 50, start_y: 95, cp1x: 60, cp1y: 120, end_x: 70, end_y: 0},
+            ]
+
+            check_context.beginPath();
+            check_context.moveTo( test[0]['start_x'] * scale_rate  , test[0]['start_y'] * scale_rate )
+            for (let i=0; i<test.length; i++) {
+                check_context.quadraticCurveTo( 
+                    test[i]['cp1x'] * scale_rate,
+                    test[i]['cp1y'] * scale_rate ,
+                    test[i]['end_x'] * scale_rate ,
+                    test[i]['end_y'] * scale_rate , 
+                )
+            }
+            check_context.fillStyle = '#1c4e28';
+            check_context.fill();
+        }
+
+
+
+    </script>
+
+</body>
+</html>

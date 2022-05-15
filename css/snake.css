@@ -1,0 +1,184 @@
+@import url(font.css);
+
+*{ 
+    font-family: 'Noto Sans TC';
+    padding: 0px;
+    margin: 0px;
+}
+
+#sound_effect {
+    padding: 5px 0px 5px 10px ;  /*因為圖片本身靠左，所以往其他方向推*/
+    position: fixed;
+    right: 2.5%;
+    bottom: 4.5%;
+    background-color: pink;
+    border-radius: 50px;
+    opacity: 0.3;
+}
+
+#sound_effect:hover {
+    opacity: 1;
+    border: 1px solid rgb(255, 121, 121)
+}
+
+#sound_effect:active{ /*點擊效果*/
+    border-color: white;
+    border-width: 1.5px;
+}
+
+canvas {   
+    position:absolute ;
+    left: 25%;
+    width: 75%;
+    box-sizing: border-box;
+    border-style: solid;
+
+    display: block;
+}
+#info {
+    position: fixed;
+    display: flex;
+    left: 25%;
+    width: 75%;
+}
+#info h2:first-child::after{
+    content: attr(score);
+    font-size: 3.5vmin;
+}
+#info h2:nth-child(2)::after{
+    content: attr(level);
+    font-size: 3.5vmin;
+}
+#msg_box{
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 0;
+    right: 0;
+    width: 30%;
+    height: 140px;
+    margin: auto;
+    background-color: rgb(255, 219, 219);
+    border-radius: 10px;
+    border:3px solid rgb(255, 121, 121);
+}
+#gamer_name {
+    display: block;
+    width: 90%; 
+    margin: 5px auto 0 ;
+    padding: 0 3px ;
+    border-width: 0;
+    font-weight: 600;
+    font-size: 25px;
+}
+#submit{
+    display: block;
+    width: 50%; 
+    margin: 8px auto 0px;
+    border-width: 2px;
+    border-radius: 50px;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+#submit:hover{ /*移入效果*/
+    transition: 0.1s;
+    transform: scale(1.03);
+    background-color: antiquewhite;
+    border-color: rgb(27, 29, 31);
+}
+
+#submit:active{ /*點擊效果*/
+    transition: 0.1s;
+    transform: scale(1);
+    border-color: white;
+    border-width: 3px;
+}
+
+#leaderboard__profiles{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 25%;
+    background-color: beige;
+    border-radius: 12px;
+    padding: 15px;
+    display: grid;
+    row-gap: 16px;
+    box-sizing: border-box;
+}
+
+.leaderboard__profile {
+    display: grid;
+    grid-template-columns : 1fr 3fr 1fr ;
+    grid-template-rows : 100%; /*這行要加才會跟著頁面移動*/
+    align-items: center;
+    padding: 10px 30px 10px 10px;  
+    border-radius: 10px;
+    box-shadow: 0 5px 16px 0px rgb(51, 51, 51, 0.23);
+    background-color: white;
+    overflow: hidden;
+    transition: 0.25s;
+}
+.leaderboard__profile:hover {
+    transform: scale(1.10);
+}
+
+.leaderboard__rank {
+    text-align: center;
+    width: 50px;
+    line-height: 50px;
+    font-size: 6vmin;
+    grid-area:1/1/2/2;
+    transform: skew(-10deg);
+    color: rgb(0, 0, 0);
+    margin: 0 auto;
+    border-radius: 50%;
+    z-index: 2;
+    opacity: 0.3;
+}
+
+.leaderboard__round {
+    width: 50px;
+    height: 50px;
+    grid-area:1/1/2/2;
+    margin: 0 auto;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1.2vmin #ebeef3, 0 0 0 4vmin #f3f4f6;
+    z-index: 1;
+    background-color: #f3f4f6;
+}
+
+.leaderboard__name {
+    color: #2d2e35;
+    font-weight: 450;
+    font-size: 2.5vmin;
+    margin-left: 5vmin;
+    white-space: nowrap; /*不換行*/
+    overflow:hidden; /*超出隱藏*/
+    text-overflow: ellipsis; /*超出部分顯示...*/
+}
+
+.leaderboard__score {
+    color: #35d8ac;
+    font-weight: 450;
+    font-size: 3vmin;
+    text-align: right;
+    padding-right: 3px;
+}
+
+.leaderboard__profile:first-child .leaderboard__rank{ /*第一名*/
+    opacity: 1;
+    color: gold;
+    text-shadow: 0 0 5px black,0 0 10px gold,0 0 20px rgb(253, 222, 49),0 0 30px rgb(255, 237, 136),0 0 40px rgb(255, 247, 201);
+}
+.leaderboard__profile:nth-child(2) .leaderboard__rank{ /*第二名*/
+    opacity: 1;
+    color: silver;
+    text-shadow: 0 0 5px black,0 0 10px silver,0 0 20px rgb(151, 151, 151),0 0 30px silver,0 0 40px rgb(122, 122, 122);
+}
+.leaderboard__profile:nth-child(3) .leaderboard__rank{ /*第三名*/
+    opacity: 1;
+    color: #ffaa00;
+    text-shadow: 0 0 5px black,0 0 10px #ffaa00,0 0 20px #ffb41e,0 0 30px #ffbf40,0 0 40px #ffd279;
+}
